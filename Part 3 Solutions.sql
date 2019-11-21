@@ -1,22 +1,19 @@
 #part 3
 #question 1
 SELECT c.category_name, p.product_name, p.list_price
-FROM categories c
-JOIN products p 
+FROM categories c, products p 
 WHERE c.category_id = p.category_id
 ORDER BY c.category_name, p.product_name;
 
 #question 2
 SELECT c.first_name, c.last_name, c.email_address, a.line1, a.city, a.state, a.zip_code  
-FROM customers c
-JOIN addresses a
+FROM customers c, addresses a
 ON c.customer_id = a.customer_id
 WHERE c.email_address = 'allan.sherwood@yahoo.com';
 
 #question 3
 SELECT first_name, last_name, line1, city, state, zip_code  
-FROM customers c
-JOIN addresses a
+FROM customers c, addresses a
 ON c.customer_id = a.customer_id
 WHERE c.shipping_address_id = a.address_id;
 
