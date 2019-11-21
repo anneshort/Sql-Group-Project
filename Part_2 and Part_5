@@ -1,0 +1,113 @@
+#part2
+#1
+SELECT product_code, product_name, list_price, discount_percent
+FROM products
+ORDER BY list_price DESC;
+#2
+SELECT last_name, first_name 
+FROM Customers
+WHERE last_name between 'M%' and 'Z%' 
+ORDER BY last_name, first_name;
+#3
+select product_name , list_price , date_added from Products 
+where list_price > 500 and list_price < 2000 order by date_added Desc;
+
+#4
+select product_name,list_price, round(list_price*(discount_percent/100),2)as discount_amount,
+Round(list_price-list_price*(discount_percent/100),2)as discount_price
+from products
+order by discount_price limit 5; 
+
+
+#5
+SELECT item_id, item_price,
+discount_amount, quantity,
+item_price * quantity AS price_total,
+discount_amount * quantity AS discount_total,
+item-price - discount_amount * quantity
+AS item_total
+From Order_Items
+WHERE (item_price - discount_amount) * quantity
+> 500
+ORDER BY item_total DESC;
+
+#6
+select order_id, order_date, ship_date from orders where ship_data is null;
+#7
+SELECT 
+    NOW() AS 'today_unformatted',
+    DATE_FORMAT(NOW(), '%d-%b-%Y') AS 'today_formatted';
+#8
+
+SELECT 
+    100 AS price,
+    0.07 AS tax_rate,
+    100 * 0.07 AS tax_amount,
+    100 + 0.07 * 100 AS total;
+    
+	
+	part #5
+	#1
+SELECT COUNT(Order_ID) as Order_Count,
+SUM(Tax_Amount) AS Tax_Total
+FROM Orders;
+#2
+SELECT Category_Name, COUNT(*) AS ProductCount,
+MAX(List_Price) AS MostExpensiveProduct
+FROM Categories c JOIN Products p
+ON c.Category_ID = p.Category_ID
+GROUP BY Category_Name
+ORDER BY ProductCount DESC;
+
+#3
+SELECT Email_Address, SUM(Item_Price * Quantity) AS ItemPriceTotal,
+SUM(Discount_Amount * Quantity) AS DiscountAmountTotal
+FROM Customers c
+JOIN Orders o ON c.Customer_ID = o.Customer_ID
+JOIN Order_Items oi ON o.Order_ID = oi.Order_ID
+GROUP BY Email_Address
+ORDER BY ItemPriceTotal DESC;
+
+#4.........................
+
+#5...........................
+
+#6
+SELECT Product_Name, SUM((Item_Price - Discount_Amount) * Quantity) AS ProductTotal
+FROM Products p
+JOIN Order_Items o ON p.Product_ID = o.Product_ID
+GROUP BY Product_Name WITH ROLLUP;
+
+#7
+SELECT Email_Address,
+COUNT(DISTINCT o.Product_ID) AS NumberOfProducts
+FROM Customers c
+JOIN Orders os ON c.Customer_ID = os.Customer_ID
+JOIN Order_Items o ON os.Order_ID = o.Order_ID
+GROUP BY Email_Address
+HAVING COUNT(DISTINCT o.Product_ID) > 1
+ORDER BY Email_Address;
+
+#8....................
+#9
+SELECT order_id, (item_price - discount_amount) * quantity AS item_amount,
+    SUM((item_price - discount_amount) * quantity) AS order_amount 
+FROM order_items
+group by order_id
+ORDER BY order_id;
+
+#10
+SELECT order_id, (item_price - discount_amount) * quantity AS item_amount,
+    SUM((item_price - discount_amount) * quantity) AS order_amount, 
+    AVG((item_price - discount_amount) * quantity) AS avg_order_amount
+FROM order_items
+group by order_id
+ORDER BY order_id;
+
+#11
+SELECT customer_id, order_date, (item_price - discount_amount) * quantity AS item_total,
+       SUM((item_price - discount_amount) * quantity) AS customer_total,
+       SUM((item_price - discount_amount) * quantity) AS customer_total_by_date            
+FROM orders JOIN order_items ON orders.order_id = order_items.order_id
+group by customer_id
+ORDER BY order_date;
