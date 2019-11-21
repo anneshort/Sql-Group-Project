@@ -1,0 +1,151 @@
+#Part 2
+#1
+SELECT product_code, product_name, list_price, discount_percent
+FROM products
+order by list_price DESC;
+
+#2
+select concat(last_name, ', ', first_name) as full_name 
+from customers	
+where last_name >= 'M%'
+order by last_name ASC;
+
+#3
+select product_name, list_price, date_added
+from products
+having list_price between 500 and 2000
+order by date_added desc;
+
+#4
+select product_name, list_price,
+	ROUND(list_price * (discount_percent/100),2) as discount_amount,
+	ROUND(list_price - list_price * (discount_percent/100),2) as discount_price
+from products
+order by discount_price desc
+limit 5;
+
+#5
+select item_id, item_price, discount_amount, quantity,
+item_price * quantity as price_total,
+discount_amount * quantity as discount_total,
+item_price - discount_amount * quantity as item_total	
+from order_items
+where (item_price - discount_amount * quantity) >500
+order by item_total desc;
+
+#6
+select order_id, order_date, ship_date
+from orders
+where ship_date = NULL;
+
+#7 
+
+#8 
+# do we need to create a table for this one?
+# I'm not sure how to complete without creating table
+drop table if exists price;
+create table price 
+(item_price		DECIMAL(7,2)	NOT NULL,
+tax_rate	DECIMAL(2,2)	NOT NULL,
+tax_amount	DECIMAL(10,2)   NOT NULL,
+total		DECIMAL(20,2)   NOT NULL);
+insert into price
+values( 100, .07, tax_rate*item_price, item_price+tax_amount);
+select item_price, tax_rate, tax_amount, total
+from price;
+
+#Part 3
+#1
+select c.category_name, p.product_name, p.list_price
+from categories c, products p
+order by c.category_name, p.product_name;
+
+#2 no way to remove white spaces from center of string?
+select c.first_name, c.last_name, a.line1, a.city, a.state, a.zip_code, 
+	concat(c.first_name, ".", c.last_name, "@yahoo.com") as email_address
+from Customers c, Addresses a;
+
+#3
+select c.first_name, c.last_name, a.line1, a.city, a.state, a.zip_code 
+from Customers c, Addresses a
+where c.shipping_address_id = a.address_id;
+
+#4
+select c.last_name, c.first_name, o.order_date, p.product_name, oi.item_price, oi.discount_amount, oi.quantity
+from Customers c, Orders o, Products p, Order_items oi
+order by c.last_name, o.order_date, p.product_name;
+
+#5
+select a.product_name, a.product_id, a.list_price
+from Products a, products b
+where a.product_id != b.product_id
+and a.list_price = b.list_price
+order by a.product_name;
+
+#6 no results?
+select c.category_name, p.product_id
+from categories c right outer join products p on c.category_id = p.category_id
+where p.product_id = NULL
+group by category_name;
+
+#7 
+#ship_status	A calculated column that contains a value of SHIPPED or NOT SHIPPED
+#order_id	The order_id column
+#order_date	The order_date column
+select (ship_date as ship_status
+from orders
+where
+(case ship_status
+	when (ship_date = NULL) then ship_status := "NOT SHIPPED"
+	when ship_date := !NULL then ship_status:= "SHIPPED"
+    end as Description))
+Union
+(select order_id from orders)
+Union
+(select order_datefrom orders)
+order by order_date;
+
+
+#Part 4
+
+#1
+INSERT INTO Categories
+VALUES(default, 'Brass');
+
+#2.	
+ update Categories 
+ set category_name= 'Woodwinds'
+ where category_name = 'Brass';
+ 
+ 
+ #3
+ delete from Categories  
+ where category_id = 'Woodwinds';
+
+ 
+ #4
+insert into Products
+values (default, 4, 'dgx_640', 'Yamaha DGX 640 88-Key Digital Piano', 'Long description to come',
+	799.99, 0.00, '2019-01-01 12:01:01');
+    
+#5
+update products
+set discount_percent = 35.00
+where product_name= 'Yamaha DGX 640 88-Key Digital Piano';
+
+#6
+?
+
+#7
+Insert into Customers
+values(default, 'rick@raven.com', ' ', 'Rick', 'Raven', NULL, NULL);
+
+#8
+update Customers
+set password = 'secret'
+where email_address = 'rick@raven.com';
+
+#9
+update Customers
+set password = 'reset'
+limit 100;
