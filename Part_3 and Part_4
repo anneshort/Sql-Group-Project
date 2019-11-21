@@ -1,0 +1,83 @@
+#Part 3
+   #1
+   SELECT C.category_name,P.product_name,P.list_price 
+   FROM  Categories c, Products p
+ ORDER BY C.category_name, P.product_name;
+
+#2
+select first_name , last_name , line1 , city , state , zip_code
+ from Addresses a, Customers c 
+ where c.customer_id = a.customer_id and email_address = 'allan.sherwood@yahoo.com';
+
+#3
+ SELECT cust.first_name, cust.last_name, ad.line1, ad.city, ad.state, ad.zip_code
+FROM Customers cust,addresses ad
+where
+Cust.shipping_address_id=ad.address_id;
+
+#4
+SELECT cus.last_name, cus.first_name, o.order_date, p.product_name, ip.item_price, ip.discount_amount, ip.quantity
+ FROM customers cus, orders o, products p, order_items ip
+ ORDER BY cus.last_name, o.order_date, p.product_name;
+
+#5
+SELECT p1.product_name, p1.list_price
+ FROM products p1 JOIN products p2 
+ ON (p1.list_price = p2.list_price) AND (p1.product_id <> p2.product_id) 
+ ORDER BY product_name;
+
+#6
+SELECT cat.category_name, product_id 
+FROM categories cat left outer JOIN products pr
+ ON cat.category_id = pr.category_id;
+#7
+SELECT 'SHIPPED' AS Ship_Status,
+Order_Id, Order_Date
+FROM Orders
+WHERE Ship_Date IS NOT NULL
+UNION
+SELECT 'NOT SHIPPED' as ship_status, Order_ID, Order_Date
+FROM Orders
+WHERE Ship_Date IS NULL
+ORDER BY Order_Date;
+
+#part 4
+#1
+INSERT INTO Categories(category_name) VALUES('Brass');
+
+#2
+UPDATE Categories SET category_name='Woodwinds' WHERE category_id=12;
+select * from categories;
+
+#3
+delete from categories where
+ category_id =11;
+ 
+
+#4
+INSERT INTO Products (product_id,category_id,product_code,product_name,description,list_price,discount_percent,date_added)
+VALUES (11,4,'dgx_640','Yamaha DGX 640 88-Key Digital Piano','Long description to come',799.99,0,curdate());
+select * from products;
+
+
+SET SQL_SAFE_UPDATES=0;
+#5
+UPDATE PRODUCTs SET discount_percent=35 where discount_percent=0;
+
+#6.........................
+
+#7
+insert INTO Customers (email_address, password , first_name , last_name ) VALUES
+ ('rick@raven.com' , '' , 'Rick' , 'Raven' );
+ SELECT * FROM Customers ;
+
+#8
+UPDATE Customers SET password = 'secret' 
+WHERE email_address = 'rick@raven.com' ;
+ SELECT * FROM Customers;
+#9
+UPDATE customers 
+SET 
+    password = 'reset'
+LIMIT 100;
+ SELECT * FROM Customers;
