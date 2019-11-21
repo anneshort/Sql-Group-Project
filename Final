@@ -74,13 +74,15 @@
 
 #part 6
 #question 1 
+#Keven
 SELECT  category_name
 FROM categories c
 WHERE category_id IN
 (SELECT category_id FROM products p)
 ORDER BY category_name;
 
-#question 2 
+#question 2
+#Keven
 SELECT product_name, list_price
 FROM products
 WHERE list_price>
@@ -89,14 +91,16 @@ FROM products
 WHERE list_price > 0)
 ORDER BY list_price DESC
 
-#question 3 
+#question 3
+#Keven
 SELECT category_name
 FROM categories
 WHERE NOT EXISTS 
 (SELECT * FROM products WHERE categories.category_id =
 products.category_id)
 
-#question 4 
+#question 4
+#Keven
 SELECT l.email_address, MAX(l.order_total) AS largest_order
 FROM (SELECT c.email_address, o.order_id, ((oi.item_price-oi.discount_amount)*oi.quantity) AS order_total
 FROM customers c JOIN orders o
@@ -107,6 +111,7 @@ GROUP BY c.email_address, o.order_id) AS l
 GROUP BY l.email_address //get error when trying to group by largest_order
 
 #question 5 
+#Keven
 SELECT a.product_name, a.discount_percent
 FROM products AS a
 WHERE a.discount_percent NOT IN
@@ -115,6 +120,7 @@ WHERE a.product_name <> b.product_name)
 ORDER BY product_name
 
 #question 6 
+#Keven
 SELECT email_address, order_id, order_date
 FROM customers AS a NATURAL JOIN orders
 WHERE order_date = 
