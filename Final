@@ -70,17 +70,22 @@ select first_name , last_name , line1 , city , state , zip_code
  where c.customer_id = a.customer_id and email_address = 'allan.sherwood@yahoo.com';
 
 #question 3
-#Anne
-SELECT first_name, last_name, line1, city, state, zip_code  
-FROM customers c, addresses a
-ON c.customer_id = a.customer_id
-WHERE c.shipping_address_id = a.address_id;
+#Brooke
+select c.first_name, c.last_name, a.line1, a.city, a.state, a.zip_code 
+from Customers c, Addresses a
+where c.shipping_address_id = a.address_id;
 
 #question 4
-#Brooke
-select c.last_name, c.first_name, o.order_date, p.product_name, oi.item_price, oi.discount_amount, oi.quantity
-from Customers c, Orders o, Products p, Order_items oi
-order by c.last_name, o.order_date, p.product_name;
+#Anne
+SELECT c.last_name, c.first_name, o.order_date, p.product_name, oi.item_price, oi.discount_amount, oi.quantity
+FROM customers c
+JOIN orders o
+On c.customer_id = o.customer_id
+JOIN order_items oi
+ON o.order_id = oi.order_id
+JOIN products p
+ON oi.product_id = p.product_id
+ORDER BY last_name, order_date, product_name;
 
 #question 5
 #Brooke
