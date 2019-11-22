@@ -1,0 +1,9 @@
+//question 1 part4
+INSERT INTO Categories(category_name) VALUES('Brass')
+
+//question 2 part4
+UPDATE Categories SET category_name='Woodwinds' WHERE category_id=12
+
+//question 3 part4
+DELETE FROM categories 
+WHERE category_id = 5
