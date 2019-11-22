@@ -26,7 +26,8 @@ ON c.customer_id =o.customer_id
 JOIN order_items oi
 ON o.order_id = oi.order_id
 GROUP BY c.email_address, o.order_id) AS l 
-GROUP BY l.email_address //get error when trying to group by largest_order
+GROUP BY l.email_address
+ORDER BY largest_order DESC
 //question 5 part 6
 SELECT a.product_name, a.discount_percent
 FROM products AS a
