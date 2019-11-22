@@ -65,6 +65,9 @@ order by c.category_name, p.product_name;
 
 #question 2
 #Pramosh
+select first_name , last_name , line1 , city , state , zip_code
+ from Addresses a, Customers c 
+ where c.customer_id = a.customer_id and email_address = 'allan.sherwood@yahoo.com';
 
 #question 3
 #Anne
@@ -109,9 +112,11 @@ ORDER BY order_date;
 #part 4
 #question 1
 #Pramosh
+INSERT INTO Categories(category_name) VALUES('Brass');
 
 #question 2
 #Pramosh
+UPDATE Categories SET category_name='Woodwinds' WHERE category_id=12;
 
 #question 3
 #Anne
@@ -136,6 +141,9 @@ DELETE FROM categories WHERE category_id = 4;
 
 #question 7
 #Pramosh
+insert INTO Customers (email_address, password , first_name , last_name ) VALUES
+ ('rick@raven.com' , '' , 'Rick' , 'Raven' );
+ SELECT * FROM Customers ;
 
 #question 8
 #Brooke
@@ -152,36 +160,104 @@ limit 100;
 #part 5
 #question 1
 #Pramosh
+SELECT COUNT(Order_ID) as Order_Count,
+SUM(Tax_Amount) AS Tax_Total
+FROM Orders;
 
 #question 2
 #Keven
+SELECT category_name, COUNT(*) AS ProductCount,
+MAX(list_price) AS MostExpensiveProductPrice
+FROM categories c JOIN products p
+ON c.category_id = p.category_id
+GROUP BY category_name
+ORDER BY ProductCount DESC
 
 #question 3
 #Pramosh
+SELECT Email_Address, SUM(Item_Price * Quantity) AS ItemPriceTotal,
+SUM(Discount_Amount * Quantity) AS DiscountAmountTotal
+FROM Customers c
+JOIN Orders o ON c.Customer_ID = o.Customer_ID
+JOIN Order_Items oi ON o.Order_ID = oi.Order_ID
+GROUP BY Email_Address
+ORDER BY ItemPriceTotal DESC;
 
 #question 4
 #Keven
+SELECT email_address, COUNT(o.order_id) AS OrderCount,
+SUM((item_price - discount_amount) * quantity) AS OrderTotal
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+JOIN order_items oi ON o.order_id = oi.order_id
+GROUP BY email_address
+HAVING COUNT(o.order_id) > 1
+ORDER BY OrderTotal DESC
 
 #question 5
 #Keven
+SELECT email_address, COUNT(o.order_id) AS OrderCount,
+SUM((item_price - discount_amount) * quantity) AS OrderTotal
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+JOIN order_items oi ON o.order_id = oi.order_id
+WHERE item_price > 400
+GROUP BY email_address
+HAVING COUNT(o.order_id) > 1
+ORDER BY OrderTotal DESC
 
 #question 6
 #Pramosh
+SELECT Product_Name, SUM((Item_Price - Discount_Amount) * Quantity) AS ProductTotal
+FROM Products p
+JOIN Order_Items o ON p.Product_ID = o.Product_ID
+GROUP BY Product_Name WITH ROLLUP;
 
 #question 7
 #Keven
+SELECT email_address, COUNT(DISTINCT oi.product_id) AS numOfProducts
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+JOIN order_items oi ON o.order_id = oi.order_id
+GROUP BY email_address
+HAVING COUNT(DISTINCT oi.product_id) > 1
+ORDER BY email_address
 
 #question 8
 #Keven
+SELECT IF(GROUPING(category_name),'categoryName',category_name) AS replacementCategory,category_name,
+ IF(GROUPING(product_name),'productName',product_name) AS replacementProduct,product_name,
+ SUM(quantity) AS TotalQuantityPurchased
+FROM categories c
+JOIN products p ON c.category_id = p.category_id
+JOIN order_items oi ON  p.product_id = oi.product_id
+GROUP BY category_name, product_name WITH ROLLUP
 
 #question 9
 #Pramosh
+SELECT order_id, (item_price - discount_amount) * quantity AS item_amount,
+    SUM((item_price - discount_amount) * quantity) AS order_amount 
+FROM order_items
+group by order_id
+ORDER BY order_id;
 
 #question 10
 #Keven
+SELECT order_id, (item_price - discount_amount) * quantity AS item_amount,
+    SUM((item_price - discount_amount) * quantity) OVER(o_window ORDER BY (item_price - discount_amount) * quantity) AS order_amount, 
+    ROUND(AVG((item_price - discount_amount) * quantity) OVER(o_window), 2) AS avg_order_amount
+FROM order_items
+WINDOW o_window AS (PARTITION BY order_id)
+ORDER BY order_id;
 
 #question 11
 #Pramosh
+SELECT customer_id, order_date, (item_price - discount_amount) * quantity AS item_total,
+       SUM((item_price - discount_amount) * quantity) AS customer_total,
+       SUM((item_price - discount_amount) * quantity) AS customer_total_by_date            
+FROM orders JOIN order_items ON orders.order_id = order_items.order_id
+group by customer_id
+ORDER BY order_date;
 
 #part 6
 #question 1 
