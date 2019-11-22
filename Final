@@ -12,6 +12,12 @@ FROM customers
 WHERE last_name >= 'M%'
 ORDER BY last_name ASC;
 
+#we can do this problem using command 'Between'
+SELECT last_name, first_name 
+FROM Customers 
+WHERE first_name between 'M%' and 'Z%' 
+ORDER BY last_name, first_name;
+
 #question 3
 #Brooke
 select product_name, list_price, date_added
