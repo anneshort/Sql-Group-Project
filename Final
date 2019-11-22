@@ -1,21 +1,37 @@
 #part 2
 #question 1
 #Brooke
+SELECT product_code, product_name, list_price, discount_percent
+FROM products
+order by list_price DESC;
 
 #question 2
-#Brooke
+#Anne
 
 #question 3
 #Brooke
+select product_name, list_price, date_added
+from products
+having list_price between 500 and 2000
+order by date_added desc;
 
 #question 4
-#Anne
+#Brooke
+select product_name, list_price,
+	ROUND(list_price * (discount_percent/100),2) as discount_amount,
+	ROUND(list_price - list_price * (discount_percent/100),2) as discount_price
+from products
+order by discount_price desc
+limit 5;
 
 #question 5
 #Anne
 
 #question 6
 #Brooke
+select order_id, order_date, ship_date
+from orders
+where ship_date = NULL;
 
 #question 7
 #Anne
@@ -26,6 +42,9 @@
 #part 3
 #question 1
 #Brooke
+select c.category_name, p.product_name, p.list_price
+from categories c, products p
+order by c.category_name, p.product_name;
 
 #question 2
 #Pramosh
@@ -35,9 +54,17 @@
 
 #question 4
 #Brooke
+select c.last_name, c.first_name, o.order_date, p.product_name, oi.item_price, oi.discount_amount, oi.quantity
+from Customers c, Orders o, Products p, Order_items oi
+order by c.last_name, o.order_date, p.product_name;
 
 #question 5
 #Brooke
+select a.product_name, a.product_id, a.list_price
+from Products a, products b
+where a.product_id != b.product_id
+and a.list_price = b.list_price
+order by a.product_name;
 
 #question 6
 #Anne
@@ -69,9 +96,15 @@
 
 #question 8
 #Brooke
+update Customers
+set password = 'secret'
+where email_address = 'rick@raven.com';
 
 #question 9
 #Brooke
+update Customers
+set password = 'reset'
+limit 100;
 
 #part 5
 #question 1
